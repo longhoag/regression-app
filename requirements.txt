@@ -1,7 +1,7 @@
-fastapi
 uvicorn
+pydantic
 scikit-learn
 xgboost
+pandas
 joblib
-gunicorn
-pydantic
+mlflow
