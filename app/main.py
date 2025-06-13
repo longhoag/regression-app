@@ -5,6 +5,11 @@ import numpy as np
 import pandas as pd
 import uvicorn
 import os 
+import mlflow
+
+# MLflow setup
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("regression-predictions")
 
 # load model
 model = joblib.load("model.pkl")
@@ -40,9 +45,15 @@ def predict(input_data: HousingInput):
 
         # make prediction
         prediction = model.predict(processed_input)
+        predicted_value = float(prediction[0])
+
+        # log to mlflow
+        with mlflow.start_run(run_name="prediction_log", nested=True):
+            mlflow.log_params(input_dict)
+            mlflow.log_metric("predicted_median_house_value", predicted_value)
 
         return {
-            "predicted median house value": float(prediction[0]),
+            "predicted median house value": predicted_value,
             "input_data": input_dict
         }
     except Exception as e:
