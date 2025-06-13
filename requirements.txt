@@ -1,6 +1,6 @@
 uvicorn
 pydantic
-scikit-learn
+scikit-learn==1.6.1
 xgboost
 pandas
 joblib
