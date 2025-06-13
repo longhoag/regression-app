@@ -8,8 +8,15 @@ import os
 import mlflow
 
 # MLflow setup
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
+#mlflow.set_tracking_uri("http://localhost:5000")
 #mlflow.set_experiment("regression-predictions")
+if os.getenv("DISABLE_MLFLOW") != "true":
+    mlflow.set_tracking_uri("http://localhost:5000")
+    #mlflow.set_experiment("regression-predictions")
+    ENABLE_MLFLOW = True
+else:
+    ENABLE_MLFLOW = False
 
 # load model
 model = joblib.load("model.pkl")
@@ -48,9 +55,14 @@ def predict(input_data: HousingInput):
         predicted_value = float(prediction[0])
 
         # log to mlflow
-        with mlflow.start_run(run_name="prediction_log", nested=True):
-            mlflow.log_params(input_dict)
-            mlflow.log_metric("predicted_median_house_value", predicted_value)
+        # with mlflow.start_run(run_name="prediction_log", nested=True):
+        #     mlflow.log_params(input_dict)
+        #     mlflow.log_metric("predicted_median_house_value", predicted_value)
+        
+        if ENABLE_MLFLOW:
+            with mlflow.start_run():
+                mlflow.log_params(input_dict)
+                mlflow.log_metric("prediction", float(prediction[0]))
 
         return {
             "predicted median house value": predicted_value,
