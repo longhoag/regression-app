@@ -23,7 +23,7 @@ services:
     volumes:
       - ./mlruns:/mlflow/mlruns
     command: >
-      mlflow server
-      --backend-store-uri sqlite:///mlflow.db
-      --default-artifact-root /mlflow/mlruns
+      mlflow server \
+      --backend-store-uri sqlite:///mlflow.db \
+      --default-artifact-root /mlflow/mlruns \
       --host 0.0.0.0

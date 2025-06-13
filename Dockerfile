@@ -17,5 +17,8 @@ COPY . .
 # expose fastapi port
 EXPOSE 8000
 
+# skip mlflow tracking
+ENV DISABLE_MLFLOW=true
+
 # run api
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
