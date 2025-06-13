@@ -9,7 +9,7 @@ import mlflow
 
 # MLflow setup
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("regression-predictions")
+#mlflow.set_experiment("regression-predictions")
 
 # load model
 model = joblib.load("model.pkl")
@@ -58,4 +58,5 @@ def predict(input_data: HousingInput):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    
+    
